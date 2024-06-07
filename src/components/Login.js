@@ -2,52 +2,43 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enteredEmail = emailRef.current.value;
-    const enteredPassword = passwordRef.current.value;
-    const enteredConfirmPassword = confirmPasswordRef.current.value;
-    // Handle form submission logic
+    const enteredpassword = passwordRef.current.value;
 
     const userData = {
       email: enteredEmail,
-      password: enteredPassword,
+      password: enteredpassword,
       returnSecureToken: true,
     };
 
-    if (!(enteredConfirmPassword === enteredPassword)) {
-      setError("Password and confirm password not same");
-      return;
-    }
-
     try {
       const response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
         userData
       );
-
-      // const data = response.json();
-
-      console.log(response);
-      navigate("/login");
-      console.log("User Login Suceessfully");
+      console.log(response.data.idToken);
+      navigate("/");
     } catch (error) {
-      setError("email alrady Exit");
+      setError(error?.response?.data?.error?.message);
     }
+
+    // Handle form submission logic
+    console.log("Form submitted", enteredEmail, enteredpassword);
   };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
-          href="#"
+          href="/register"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
@@ -57,10 +48,10 @@ const Signup = () => {
           />
           Expense Tracker
         </a>
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               {error && (
@@ -80,7 +71,7 @@ const Signup = () => {
                   name="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@gmail.com"
+                  placeholder="name@company.com"
                   required
                   ref={emailRef}
                 />
@@ -102,36 +93,27 @@ const Signup = () => {
                   ref={passwordRef}
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <div className="flex items-center justify-between">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
-                  Confirm password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  ref={confirmPasswordRef}
-                />
+                  Forgot password?
+                </a>
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Create an account
+                Sign in
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
+                Don’t have an account yet?{" "}
                 <Link
-                  to="/login"
+                  to={"/register"}
                   className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
-                  Login here
+                  Sign up
                 </Link>
               </p>
             </form>
@@ -142,4 +124,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
