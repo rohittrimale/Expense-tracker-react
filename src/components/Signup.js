@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./../contexts/UserContext";
 
 const Signup = () => {
+  const { signup, loading } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const emailRef = useRef();
@@ -28,16 +30,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
-        userData
-      );
-
-      // const data = response.json();
-
-      console.log(response);
-      navigate("/login");
-      console.log("User Login Suceessfully");
+      await signup(enteredEmail, enteredPassword);
     } catch (error) {
       setError("email alrady Exit");
     }

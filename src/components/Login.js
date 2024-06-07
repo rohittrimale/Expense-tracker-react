@@ -1,8 +1,11 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 const Login = () => {
+  const { login } = useContext(UserContext);
+
   const navigate = useNavigate();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -20,18 +23,12 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
-        userData
-      );
-      console.log(response.data.idToken);
-      navigate("/");
+      await login(enteredEmail, enteredpassword);
     } catch (error) {
-      setError(error?.response?.data?.error?.message);
+      setError(error.message);
     }
 
     // Handle form submission logic
-    console.log("Form submitted", enteredEmail, enteredpassword);
   };
 
   return (
