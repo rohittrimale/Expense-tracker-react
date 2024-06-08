@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { IoMdPerson } from "react-icons/io";
 import { FaFirefoxBrowser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,31 +10,25 @@ const ProfilePhotoUpdate = () => {
   const fullNameRef = useRef();
   const profilePhotoUrlRef = useRef();
   const [error, setError] = useState("");
-  const { updateUserProfile } = useContext(UserContext);
+  const { updateUserProfile, user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user) {
+      fullNameRef.current.value = user.displayName || "";
+      profilePhotoUrlRef.current.value = user.photoUrl || "";
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enteredFullNameRef = fullNameRef.current.value;
     const enteredProfilePhotoUrlRef = profilePhotoUrlRef.current.value;
 
-    const userData = {
-      email: enteredFullNameRef,
-      password: enteredProfilePhotoUrlRef,
-      returnSecureToken: true,
-    };
-
     try {
-      updateUserProfile(enteredFullNameRef, enteredProfilePhotoUrlRef);
+      await updateUserProfile(enteredFullNameRef, enteredProfilePhotoUrlRef);
     } catch (error) {
       setError(error.message);
     }
-
-    // Handle form submission logic
-    console.log(
-      "Form submitted",
-      enteredFullNameRef,
-      enteredProfilePhotoUrlRef
-    );
   };
 
   return (

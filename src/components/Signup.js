@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./../contexts/UserContext";
 
 const Signup = () => {
-  const { signup, loading } = useContext(UserContext);
+  const { signup, setIdToken } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

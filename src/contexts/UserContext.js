@@ -11,6 +11,10 @@ export const useUser = () => {
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [idToken, setIdToken] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,8 +22,30 @@ export const UserProvider = ({ children }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    if (idToken) {
+      fetchUserData();
+    }
     setLoading(false);
-  }, []);
+  }, [idToken]);
+
+  const fetchUserData = async () => {
+    console.log(idToken.idToken);
+    try {
+      const response = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0`,
+        { idToken: idToken.idToken }
+      );
+      const userData = response.data.users[0];
+      console.log(response);
+      setUser({
+        displayName: userData.displayName,
+        photoUrl: userData.photoUrl,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const login = async (email, password) => {
     try {
@@ -67,11 +93,10 @@ export const UserProvider = ({ children }) => {
 
   const updateUserProfile = async (fullName, profilePhotoUrl) => {
     try {
-      const idToken = user.idToken;
       const response = await axios.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0`,
         {
-          idToken: idToken,
+          idToken: idToken.idToken,
           displayName: fullName,
           photoUrl: profilePhotoUrl,
           returnSecureToken: true,
@@ -80,6 +105,7 @@ export const UserProvider = ({ children }) => {
       const updatedUser = { ...user, ...response.data };
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
+      navigate("/");
     } catch (error) {
       throw new Error("Failed to update profile");
     }
