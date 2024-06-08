@@ -78,6 +78,9 @@ const ProfilePhotoUpdate = () => {
           Cancel
         </Link>
       </div>
+      <div>
+        <img src={profilePhotoUrlRef} />
+      </div>
     </form>
   );
 };

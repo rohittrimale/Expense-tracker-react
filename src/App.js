@@ -10,6 +10,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthenticatedRoute from "./routes/AuthenticatedRoute";
 import UnauthenticatedRoute from "./routes/UnauthenticatedRoute";
 import ForgotPassword from "./components/ForgetPassword";
+import ExpenseForm from "./components/ExpenseForm";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
                 <VerifyEmail />
               </AuthenticatedRoute>
             }
-          />{" "}
+          />
           <Route
             path="/forgotpassword"
             element={
@@ -49,19 +50,13 @@ function App() {
               </UnauthenticatedRoute>
             }
           />
-          <Route
-            path="/profileUpdate"
-            element={
-              <ProtectedRoute>
-                <ProfilePhotoUpdate />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/profileUpdate" element={<ProfilePhotoUpdate />} />
           <Route
             path="/"
             element={
               <ProtectedRoute>
                 <Home />
+                <ExpenseForm />
               </ProtectedRoute>
             }
           />

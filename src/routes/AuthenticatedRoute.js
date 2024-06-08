@@ -4,7 +4,7 @@ import { useUser } from "../contexts/UserContext";
 
 const AuthenticatedRoute = ({ children }) => {
   const { user } = useUser();
-  return user && !user.emailVerified ? children : <Navigate to="/" />;
+  return user && !user.emailVerified ? children : <Navigate to="/login" />;
 };
 
 export default AuthenticatedRoute;

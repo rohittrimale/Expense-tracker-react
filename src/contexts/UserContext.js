@@ -84,7 +84,7 @@ export const UserProvider = ({ children }) => {
       setUser(userData);
       navigate("/verifyemail");
     } catch (error) {
-      console.error("Registration error:", error);
+      throw new Error(error.response.data.error.message || "Login error");
     }
   };
 
