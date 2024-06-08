@@ -9,6 +9,7 @@ import { UserProvider } from "./contexts/UserContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthenticatedRoute from "./routes/AuthenticatedRoute";
 import UnauthenticatedRoute from "./routes/UnauthenticatedRoute";
+import ForgotPassword from "./components/ForgetPassword";
 
 function App() {
   return (
@@ -39,20 +40,28 @@ function App() {
                 <VerifyEmail />
               </AuthenticatedRoute>
             }
+          />{" "}
+          <Route
+            path="/forgotpassword"
+            element={
+              <UnauthenticatedRoute>
+                <ForgotPassword />
+              </UnauthenticatedRoute>
+            }
           />
           <Route
             path="/profileUpdate"
             element={
-              <AuthenticatedRoute>
+              <ProtectedRoute>
                 <ProfilePhotoUpdate />
-              </AuthenticatedRoute>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/"
             element={
               <ProtectedRoute>
-                <div></div>
+                <Home />
               </ProtectedRoute>
             }
           />
@@ -61,5 +70,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;
