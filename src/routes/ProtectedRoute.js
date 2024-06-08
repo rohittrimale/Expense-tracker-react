@@ -1,10 +1,10 @@
 // components/ProtectedRoute.js
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../contexts/UserContext";
+import { UserContext, useUser } from "../contexts/UserContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, checkEmailVerificationStatus } = useUser();
+  const { user, checkEmailVerificationStatus } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
