@@ -38,7 +38,7 @@ const ExpenseList = () => {
 
   return (
     <div className="mt-6 mx-auto">
-      <div className="grid grid-cols-4 justify-between bg-slate-700 px-3 items-center font-bold py-2 text-white">
+      <div className="grid grid-cols-6 justify-between bg-slate-700 px-3 items-center font-bold py-2 text-white">
         <div>Expense Name</div>
 
         <div>Expense Description</div>
@@ -47,13 +47,24 @@ const ExpenseList = () => {
         <div className="flex items-center  ">
           <div className="text-lg -ml-0.5">Expense Price</div>
         </div>
+        <div>Edit</div>
+        <div>Delete</div>
       </div>
 
-      {Object.keys(expenses).map((userId) =>
-        Object.keys(expenses[userId]).map((expenseId) => (
-          <ExpenseCart key={expenseId} expense={expenses[userId][expenseId]} />
-        ))
-      )}
+      {Object.keys(expenses).map((userId) => {
+        console.log(userId);
+        return Object.keys(expenses[userId]).map((expenseId) => {
+          console.log(expenseId);
+          return (
+            <ExpenseCart
+              userEmail={email.substring(0, email.indexOf("@"))}
+              key={expenseId}
+              expense={expenses[userId][expenseId]}
+              id={expenseId}
+            />
+          );
+        });
+      })}
     </div>
   );
 };
