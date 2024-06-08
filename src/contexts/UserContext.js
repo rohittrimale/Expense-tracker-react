@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   const fetchUserData = async (idToken) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
@@ -46,6 +47,7 @@ export const UserProvider = ({ children }) => {
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
         { email, password, returnSecureToken: true }
       );
+      console.log(response);
       const { idToken, localId } = response.data;
       const userData = { email, localId, idToken };
 
@@ -56,7 +58,7 @@ export const UserProvider = ({ children }) => {
       fetchUserData(idToken);
       navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
+      throw new Error(error.response.data.error.message || "Login error");
     }
   };
 
@@ -88,7 +90,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider value={{ user, login, logout, register, loading }}>
-      {!loading && children}
+      {children}
     </UserContext.Provider>
   );
 };

@@ -12,8 +12,7 @@ const ProtectedRoute = ({ children }) => {
       console.log(user);
       if (!user.emailVerified) {
         navigate("/verifyemail");
-      }
-      if (user.registered) {
+      } else {
         navigate("/");
       }
     }

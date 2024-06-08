@@ -16,15 +16,10 @@ const Login = () => {
     const enteredEmail = emailRef.current.value;
     const enteredpassword = passwordRef.current.value;
 
-    const userData = {
-      email: enteredEmail,
-      password: enteredpassword,
-      returnSecureToken: true,
-    };
-
     try {
       await login(enteredEmail, enteredpassword);
     } catch (error) {
+      console.log(error);
       setError(error.message);
     }
 
@@ -91,12 +86,12 @@ const Login = () => {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <a
-                  href="#"
+                <Link
+                  to="/forgotpassword"
                   className="text-sm font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <button
                 type="submit"
