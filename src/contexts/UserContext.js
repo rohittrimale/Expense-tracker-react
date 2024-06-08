@@ -29,7 +29,6 @@ export const UserProvider = ({ children }) => {
   }, [idToken]);
 
   const fetchUserData = async () => {
-    console.log(idToken.idToken);
     try {
       const response = await axios.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0`,
@@ -38,8 +37,10 @@ export const UserProvider = ({ children }) => {
       const userData = response.data.users[0];
       console.log(response);
       setUser({
+        email: userData.email,
         displayName: userData.displayName,
         photoUrl: userData.photoUrl,
+        emailVerified: userData.emailVerified,
       });
       console.log(response);
     } catch (error) {
@@ -111,9 +112,36 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const sendEmailVerification = async () => {
+    try {
+      await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0`,
+        {
+          requestType: "VERIFY_EMAIL",
+          idToken: idToken.idToken,
+        }
+      );
+    } catch (error) {
+      console.error("Error sending email verification:", error);
+    }
+  };
+
+  const checkEmailVerificationStatus = async () => {
+    await fetchUserData();
+  };
+
   return (
     <UserContext.Provider
-      value={{ user, loading, login, logout, signup, updateUserProfile }}
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        signup,
+        updateUserProfile,
+        sendEmailVerification,
+        checkEmailVerificationStatus,
+      }}
     >
       {children}
     </UserContext.Provider>
