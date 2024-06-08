@@ -1,7 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
+import { UserContext } from "../contexts/UserContext";
+import axios from "axios";
 
 const ExpenseForm = () => {
+  const { user } = useContext(UserContext);
+  const [email, setEmail] = useState("");
+
   const priceRef = useRef();
   const descriptionRef = useRef();
   const expenseNameRef = useRef();
@@ -9,12 +14,18 @@ const ExpenseForm = () => {
   const [showExpense, setShowExpense] = useState(false);
   const [expenses, setExpenses] = useState([]);
 
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email);
+    }
+  }, [user]);
+
   const handleSelectChange = (event) => {
     const value = event.target.value;
     setSelectedCategory(value);
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     let enteredExpenseName = expenseNameRef.current.value;
     let enteredPrice = priceRef.current.value;
@@ -27,7 +38,22 @@ const ExpenseForm = () => {
       expenseCategory: selectedCategory,
     };
 
-    setExpenses((prev) => [...prev, expenseData]);
+    if (email) {
+      let userEmail = email.substring(0, email.indexOf("@"));
+      console.log(userEmail);
+      try {
+        const response = await axios.post(
+          `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`,
+          expenseData
+        );
+        setExpenses((prev) => [
+          ...prev,
+          { id: response.data.name, ...expenseData },
+        ]);
+      } catch (error) {
+        console.error("Error saving expense: ", error);
+      }
+    }
 
     expenseNameRef.current.value = "";
     priceRef.current.value = "";
@@ -154,10 +180,6 @@ const ExpenseForm = () => {
             Cancel
           </button>
         </div>
-      </div>
-
-      <div>
-        <ExpenseList expenses={expenses} />
       </div>
     </form>
   );

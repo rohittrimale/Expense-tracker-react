@@ -11,6 +11,7 @@ import AuthenticatedRoute from "./routes/AuthenticatedRoute";
 import UnauthenticatedRoute from "./routes/UnauthenticatedRoute";
 import ForgotPassword from "./components/ForgetPassword";
 import ExpenseForm from "./components/ExpenseForm";
+import ExpenseList from "./components/ExpenseList";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
               <ProtectedRoute>
                 <Home />
                 <ExpenseForm />
+                <ExpenseList />
               </ProtectedRoute>
             }
           />
