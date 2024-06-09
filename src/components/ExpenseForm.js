@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { MdCurrencyRupee } from "react-icons/md";
+
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DownloadButton from "./DownloadButton";

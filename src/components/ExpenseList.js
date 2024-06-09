@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import ExpenseCart from "./ExpenseCart";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { MdCurrencyRupee } from "react-icons/md";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExpenses } from "../store/expenseSlice";
 import Loader from "./Loader";
@@ -12,7 +14,9 @@ const ExpenseList = () => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
 
-  const { expenses, loading, error } = useSelector((state) => state.expenses);
+  const { expenses, loading, error, totalExpense } = useSelector(
+    (state) => state.expenses
+  );
 
   useEffect(() => {
     if (user) {
@@ -56,6 +60,14 @@ const ExpenseList = () => {
             />
           );
         })}
+      </div>
+
+      <div className="flex justify-end items-center text-2xl bg-gray-800 px-3 font-bold py-3">
+        <div className="text-xl">Total Expense : </div>
+        <div className="mr-24 flex items-center">
+          <MdCurrencyRupee />
+          {totalExpense}
+        </div>
       </div>
 
       {/* {Object.keys(expenses).map((userId) => {

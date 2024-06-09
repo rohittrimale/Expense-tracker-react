@@ -103,6 +103,7 @@ const expensesSlice = createSlice({
         state.loading = false;
         state.expenses = action.payload;
         const totalExpense = calculateTotalExpense(state.expenses);
+        state.totalExpense = totalExpense;
         state.isEligibleForPremium = totalExpense > 10000;
       })
       .addCase(fetchExpenses.rejected, (state, action) => {
@@ -118,6 +119,7 @@ const expensesSlice = createSlice({
         console.log(action.payload);
         state.expenses.push(action.payload);
         const totalExpense = calculateTotalExpense(state.expenses);
+        state.totalExpense = totalExpense;
         state.isEligibleForPremium = totalExpense > 10000;
       })
       .addCase(deleteExpense.pending, (state, action) => {
@@ -130,6 +132,7 @@ const expensesSlice = createSlice({
           (expense) => expense.id !== action.payload
         );
         const totalExpense = calculateTotalExpense(state.expenses);
+        state.totalExpense = totalExpense;
         state.isEligibleForPremium = totalExpense > 10000;
       })
       .addCase(updateExpense.pending, (state, action) => {
@@ -146,6 +149,7 @@ const expensesSlice = createSlice({
           state.expenses[updatedExpenseIndex] = action.payload;
         }
         const totalExpense = calculateTotalExpense(state.expenses);
+        state.totalExpense = totalExpense;
         state.isEligibleForPremium = totalExpense > 10000;
       });
   },
