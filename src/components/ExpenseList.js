@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExpenses } from "../store/expenseSlice";
 import Loader from "./Loader";
+import DownloadButton from "./DownloadButton";
 
 const ExpenseList = () => {
   const { user } = useContext(UserContext);
@@ -12,7 +13,6 @@ const ExpenseList = () => {
   const dispatch = useDispatch();
 
   const { expenses, loading, error } = useSelector((state) => state.expenses);
-
 
   useEffect(() => {
     if (user) {
@@ -31,8 +31,8 @@ const ExpenseList = () => {
   if (error) return <div>Error fetching expenses: {error}</div>;
 
   return (
-    <div className="mt-6 mx-auto">
-      <div className="grid grid-cols-6 justify-between bg-slate-700 px-3 items-center font-bold py-2 text-white">
+    <div className="mt-6 mx-auto text-white">
+      <div className="grid grid-cols-6 justify-between bg-gray-800 px-3 items-center font-bold py-2">
         <div>Expense Name</div>
 
         <div>Expense Description</div>

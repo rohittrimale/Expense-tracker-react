@@ -59,7 +59,7 @@ const ExpenseCart = ({ expense, userEmail }) => {
   return (
     <div className="">
       {isEditing ? (
-        <div className="grid grid-cols-7 gap-x-5 justify-center bg-slate-200 px-3 items-center font-bold py-2 text-black">
+        <div className="border border-white grid grid-cols-6 justify-center bg-gray-700 px-3 items-center font-bold py-2 text-white">
           <div>
             <input
               type="text"

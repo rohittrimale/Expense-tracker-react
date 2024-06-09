@@ -2,11 +2,33 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import Loader from "./Loader";
+import { useDispatch, useSelector } from "react-redux";
+import DarkmodeButton from "./DarkmodeButton";
+import {
+  changeMode,
+  deactivatePremium,
+  lightMode,
+  premiumHandler,
+} from "../store/premiumSlice";
 
 const Navbar = () => {
   const { user, updateUserProfile, logout, loading } = useContext(UserContext);
   const [profileCompletion, setProfileCompletion] = useState(0);
+  const { isPremium, isDarkMode } = useSelector((state) => state.premium);
+  const dispatch = useDispatch();
 
+  const premiumModeHandler = () => {
+    dispatch(premiumHandler());
+    dispatch(changeMode());
+  };
+
+  const deactivatePremiumHandler = () => {
+    dispatch(deactivatePremium());
+    dispatch(lightMode());
+  };
+  const isEligibleForPremium = useSelector(
+    (state) => state.expenses.isEligibleForPremium
+  );
   useEffect(() => {
     calculateProfileCompletion();
   }, [user]);
@@ -64,17 +86,34 @@ const Navbar = () => {
             </NavLink>
           </div>
         )}
-        {user && (
-          <div>
-            <button
-              onClick={logoutHandler}
-              type="button"
-              className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            >
-              Logout
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-2 justify-end">
+          {isEligibleForPremium && (
+            <div>
+              <button
+                onClick={
+                  !isPremium ? premiumModeHandler : deactivatePremiumHandler
+                }
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+              >
+                <span className="relative px-4 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  {!isPremium ? "Activate Premium" : "Deactivate Premium"}
+                </span>
+              </button>
+            </div>
+          )}
+          {user && (
+            <div>
+              <button
+                onClick={logoutHandler}
+                type="button"
+                className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          {isPremium && <DarkmodeButton />}
+        </div>
       </div>
       {loading && <Loader />}
     </div>

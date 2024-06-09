@@ -2,23 +2,30 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import DownloadButton from "./DownloadButton";
+import { addExpense } from "../store/expenseSlice";
 
 const ExpenseForm = () => {
   const { user } = useContext(UserContext);
   const [email, setEmail] = useState("");
-
+  const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
   const priceRef = useRef();
   const descriptionRef = useRef();
   const expenseNameRef = useRef();
   const [selectedCategory, setSelectedCategory] = useState("Other");
   const [showExpense, setShowExpense] = useState(false);
-  const [expenses, setExpenses] = useState([]);
+  const isPremium = useSelector((state) => state.premium.isPremium);
 
   useEffect(() => {
     if (user) {
       setEmail(user.email);
     }
   }, [user]);
+
+  const isDarkMode = useSelector((state) => state.premium.isDarkMode);
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
@@ -40,16 +47,17 @@ const ExpenseForm = () => {
 
     if (email) {
       let userEmail = email.substring(0, email.indexOf("@"));
-      // console.log(userEmail);
+      console.log(userEmail);
       try {
-        const response = await axios.post(
-          `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`,
-          expenseData
-        );
-        setExpenses((prev) => [
-          ...prev,
-          { id: response.data.name, ...expenseData },
-        ]);
+        dispatch(addExpense({ email: user.email, expenseData }));
+        // const response = await axios.post(
+        //   `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`,
+        //   expenseData
+        // );
+        // setExpenses((prev) => [
+        //   ...prev,
+        //   { id: response.data.name, ...expenseData },
+        // ]);
       } catch (error) {
         console.error("Error saving expense: ", error);
       }
@@ -69,36 +77,39 @@ const ExpenseForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className="p-5">
-      <div className="font-bold text-lg mb-4">
-        <button
-          type="button"
-          onClick={toggleAddExpense}
-          className="relative inline-block text-lg group"
-        >
-          <span className="relative z-10 block px-3 py-2 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-            <span className="absolute inset-0 w-full h-full px-3 py-2 rounded-lg bg-gray-50"></span>
-            <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-            <span className="relative">Add Expense</span>
-          </span>
-          <span
-            className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-            data-rounded="rounded-lg"
-          ></span>
-        </button>
+    <form onSubmit={onSubmitHandler} className="mt-4 ">
+      <div className="font-bold text-lg mb-4 mx-12">
+        <div className="flex justify-center gap-10 mt-2">
+          <button
+            type="button"
+            onClick={toggleAddExpense}
+            className="relative inline-block text-lg group"
+          >
+            <span className="relative z-10 block px-3 py-2 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+              <span className="absolute inset-0 w-full h-full px-3 py-2 rounded-lg bg-gray-50"></span>
+              <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+              <span className="relative">Add Expense</span>
+            </span>
+            <span
+              className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
+              data-rounded="rounded-lg"
+            ></span>
+          </button>
+          {isPremium && <DownloadButton />}
+        </div>
       </div>
       <div
         className={`transition-all duration-500 transform ${
           showExpense
-            ? "opacity-100 max-h-screen"
+            ? "opacity-100 max-h-screen bg-neutral-600 py-2 mx"
             : "opacity-0 max-h-0 overflow-hidden"
         }`}
       >
-        <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-2 mx-5 pt-3">
           <div>
             <label
               htmlFor="expense-name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
             >
               Expense Name
             </label>
@@ -107,14 +118,14 @@ const ExpenseForm = () => {
               type="text"
               id="expense-name"
               required
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full p-2 text-gray-800 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
 
           <div>
             <label
               htmlFor="expense-description"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
             >
               Expense Description
             </label>
@@ -123,21 +134,21 @@ const ExpenseForm = () => {
               type="text"
               id="expense-description"
               required
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full p-2 text-gray-800 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
 
           <div>
             <label
               htmlFor="expense-price"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
             >
               Expense Price
             </label>
             <input
               ref={priceRef}
               type="number"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder=""
               required
             />
@@ -146,13 +157,13 @@ const ExpenseForm = () => {
           <div className="">
             <label
               htmlFor="category"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
             >
               Select a Category
             </label>
             <select
               id="category"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               value={selectedCategory}
               onChange={handleSelectChange}
             >

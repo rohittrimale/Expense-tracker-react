@@ -12,8 +12,20 @@ import UnauthenticatedRoute from "./routes/UnauthenticatedRoute";
 import ForgotPassword from "./components/ForgetPassword";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
+  const isDarkMode = useSelector((state) => state.premium.isDarkMode);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
   return (
     <BrowserRouter>
       <UserProvider>
