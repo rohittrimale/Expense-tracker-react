@@ -40,7 +40,7 @@ const ExpenseForm = () => {
 
     if (email) {
       let userEmail = email.substring(0, email.indexOf("@"));
-      console.log(userEmail);
+      // console.log(userEmail);
       try {
         const response = await axios.post(
           `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`,

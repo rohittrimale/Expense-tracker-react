@@ -2,39 +2,33 @@ import React, { useContext, useEffect, useState } from "react";
 import ExpenseCart from "./ExpenseCart";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchExpenses } from "../store/expenseSlice";
+import Loader from "./Loader";
 
 const ExpenseList = () => {
   const { user } = useContext(UserContext);
   const [email, setEmail] = useState("");
-  const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
+
+  const { expenses, loading, error } = useSelector((state) => state.expenses);
+
 
   useEffect(() => {
     if (user) {
       setEmail(user.email);
+      dispatch(fetchExpenses(user.email));
     }
-    fetchExpenses();
-  }, [user]);
-  console.log(expenses);
+  }, [user, dispatch]);
 
-  const fetchExpenses = async () => {
-    const userEmail = email.substring(0, email.indexOf("@"));
+  if (loading)
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
 
-    try {
-      const response = await axios.get(
-        `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`
-      );
-
-      const data = response.data;
-      const loadedExpenses = [];
-      for (const key in data) {
-        loadedExpenses.push({ id: key, ...data[key] });
-      }
-      console.log(loadedExpenses);
-      setExpenses(loadedExpenses);
-    } catch (error) {
-      console.log("Eroor", error);
-    }
-  };
+  if (error) return <div>Error fetching expenses: {error}</div>;
 
   return (
     <div className="mt-6 mx-auto">
@@ -51,7 +45,20 @@ const ExpenseList = () => {
         <div>Delete</div>
       </div>
 
-      {Object.keys(expenses).map((userId) => {
+      <div>
+        {expenses.map((expense) => {
+          return (
+            <ExpenseCart
+              userEmail={email}
+              key={expense.id}
+              expense={expense}
+              id={expense.id}
+            />
+          );
+        })}
+      </div>
+
+      {/* {Object.keys(expenses).map((userId) => {
         console.log(userId);
         return Object.keys(expenses[userId]).map((expenseId) => {
           console.log(expenseId);
@@ -64,7 +71,7 @@ const ExpenseList = () => {
             />
           );
         });
-      })}
+      })} */}
     </div>
   );
 };

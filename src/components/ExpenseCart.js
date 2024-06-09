@@ -1,26 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdCurrencyRupee } from "react-icons/md";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteExpense, updateExpense } from "../store/expenseSlice";
+import Loader from "./Loader";
 
-const ExpenseCart = ({ expense, id, userEmail }) => {
+const ExpenseCart = ({ expense, userEmail }) => {
   const { expenseName, expensePrice, expenseDescription, expenseCategory } =
     expense;
-
-
+  const { loading } = useSelector((state) => state.expenses);
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editedExpense, setEditedExpense] = useState(expense);
 
   const handleDelete = () => {
-    axios
-      .delete(
-        `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}/${id}.json`
-      )
-      .then((response) => {
-        console.log("Expense successfully deleted");
-      })
-      .catch((error) => {
-        console.error("Error deleting expense:", error);
-      });
+    dispatch(deleteExpense({ email: userEmail, id: expense.id }));
   };
 
   const handleEdit = () => {
@@ -28,18 +23,14 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
   };
 
   const handleSave = () => {
-    axios
-      .put(
-        `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}/${id}.json`,
-        editedExpense
-      )
-      .then((response) => {
-        console.log("Expense successfully updated");
-        setIsEditing(false);
+    dispatch(
+      updateExpense({
+        email: userEmail,
+        id: editedExpense.id,
+        updatedExpense: editedExpense,
       })
-      .catch((error) => {
-        console.error("Error updating expense:", error);
-      });
+    );
+    setIsEditing(false);
   };
 
   const handleChange = (e) => {
@@ -59,6 +50,12 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
     return null; // If any expense detail is empty, don't render the component
   }
 
+  if (loading)
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   return (
     <div className="">
       {isEditing ? (
@@ -103,7 +100,7 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
           <button
             type="button"
             onClick={handleSave}
-            class="text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
           >
             Submit
           </button>
@@ -111,7 +108,7 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
           <button
             type="button"
             onClick={handleDelete}
-            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             Delete
           </button>
@@ -128,7 +125,7 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
           <button
             type="button"
             onClick={handleEdit}
-            class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
           >
             Edit
           </button>
@@ -136,7 +133,7 @@ const ExpenseCart = ({ expense, id, userEmail }) => {
           <button
             type="button"
             onClick={handleDelete}
-            class="text-white bg-gradient-to-r py-1.5 from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-2 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r py-1.5 from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-2 text-center me-2 mb-2"
           >
             Delete
           </button>

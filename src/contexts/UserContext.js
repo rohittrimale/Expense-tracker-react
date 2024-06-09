@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
         { email, password, returnSecureToken: true }
       );
-      console.log(response);
+      // console.log(response);
       const { idToken, localId } = response.data;
       const userData = { email, localId, idToken };
 
