@@ -38,17 +38,20 @@ const ExpenseList = () => {
     <div className="mt-6 mx-auto text-white">
       {totalExpense ? (
         <div>
-          <div className="grid grid-cols-6 justify-between bg-gray-800 px-3 items-center font-bold py-2">
-            <div>Expense Name</div>
+          <div className="grid grid-cols-12 md:grid-cols-12 justify-between bg-gray-800 px-3 items-center font-bold py-2">
+            <div className="col-span-2 md:col-span-2"> Name</div>
 
-            <div>Expense Description</div>
+            <div className="col-span-4  md:col-span-3"> Description</div>
 
-            <div>Expense Category</div>
-            <div className="flex items-center  ">
-              <div className="text-lg -ml-0.5">Expense Price</div>
+            <div className="col-span-3 md:col-span-3"> Category</div>
+            <div className="text-lg -ml-0.5 col-span-2 md:col-span-2">
+              Price
             </div>
-            <div>Edit</div>
-            <div>Delete</div>
+            <div className=" gap-3 md:col-span-1 md:flex hidden">
+              <div>Edit</div>
+              <div>Delete</div>
+            </div>
+            <div className="  col-span-1 md:hidden ">Action</div>
           </div>
 
           <div>

@@ -12,7 +12,7 @@ const Home = () => {
   }, [navigate, user]);
 
   return (
-    <div className="text-center bg-orange-400 py-2 mt-5">
+    <div className="text-center text-2xl font-bold py-2 mt-5">
       Welcome to Expense Tracking{" "}
     </div>
   );

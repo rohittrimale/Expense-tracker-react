@@ -52,7 +52,7 @@ const ExpenseForm = () => {
       console.log(userEmail);
       try {
         dispatch(addExpense({ email: user.email, expenseData }));
-        // const response = await axios.post(
+
         //   `https://satiya-585fe-default-rtdb.firebaseio.com/expenses/${userEmail}.json`,
         //   expenseData
         // );
@@ -107,7 +107,7 @@ const ExpenseForm = () => {
             : "opacity-0 max-h-0 overflow-hidden"
         }`}
       >
-        <div className="grid grid-cols-2 gap-x-6 gap-y-2 mx-5 pt-3">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-x-6 gap-y-2 mx-5 pt-3">
           <div>
             <label
               htmlFor="expense-name"

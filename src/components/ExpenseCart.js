@@ -59,14 +59,14 @@ const ExpenseCart = ({ expense, userEmail }) => {
   return (
     <div className="">
       {isEditing ? (
-        <div className="border border-white grid grid-cols-6 justify-center bg-gray-700 px-3 items-center font-bold py-2 text-white">
+        <div className="border border-white grid grid-cols-12 justify-center bg-gray-700 px-3 items-center font-bold py-2 text-white">
           <div>
             <input
               type="text"
               name="expenseName"
               value={editedExpense.expenseName}
               onChange={handleChange}
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block col-span-2 md:col-span-2 w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
           <div>
@@ -75,7 +75,7 @@ const ExpenseCart = ({ expense, userEmail }) => {
               name="expenseDescription"
               value={editedExpense.expenseDescription}
               onChange={handleChange}
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block col-span-4 md:col-span-3 w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
           <div>
@@ -84,59 +84,64 @@ const ExpenseCart = ({ expense, userEmail }) => {
               name="expenseCategory"
               value={editedExpense.expenseCategory}
               onChange={handleChange}
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block col-span-3 md:col-span-3 w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center col-span-2 md:col-span-2">
             <MdCurrencyRupee />
             <input
               type="text"
               name="expensePrice"
               value={editedExpense.expensePrice}
               onChange={handleChange}
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block  w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
-          >
-            Submit
-          </button>
+          <div className="">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="text-white col-span-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
+            >
+              Submit
+            </button>
 
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Delete
-          </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="text-white col-span-1 bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ) : (
-        <div className="border border-black grid grid-cols-6 justify-center bg-slate-200 px-3 items-center font-bold py-2 text-black">
-          <div>{expenseName}</div>
-          <div>{expenseDescription}</div>
-          <div>{expenseCategory}</div>
-          <div className="flex items-center">
+        <div className="border border-black grid grid-cols-12 justify-center bg-slate-200 px-3 items-center font-bold py-2 text-black">
+          <div className="col-span-2 md:col-span-2">{expenseName}</div>
+          <div className="col-span-4 md:col-span-3">{expenseDescription}</div>
+          <div className="col-span-3 md:col-span-3">{expenseCategory}</div>
+          <div className="col-span-2 md:col-span-2 flex items-center ">
             <MdCurrencyRupee />
             <div>{expensePrice}</div>
           </div>
-          <button
-            type="button"
-            onClick={handleEdit}
-            className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
-          >
-            Edit
-          </button>
+          <div className="gap-3 md:col-span-1 md:flex hidden">
+            <button
+              type="button"
+              onClick={handleEdit}
+              className="text-white col-span-1 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-2 py-1.5 text-center me-2 mb-2"
+            >
+              Edit
+            </button>
 
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="text-white bg-gradient-to-r py-1.5 from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-2 text-center me-2 mb-2"
-          >
-            Delete
-          </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="text-white col-span-1 bg-gradient-to-r py-1.5 from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-2 text-center me-2 mb-2"
+            >
+              Delete
+            </button>
+          </div>
+          <div className="  col-span-1 md:hidden ">...</div>
         </div>
       )}
     </div>

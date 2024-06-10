@@ -19,19 +19,12 @@ const Signup = () => {
     const enteredConfirmPassword = confirmPasswordRef.current.value;
     // Handle form submission logic
 
-    const userData = {
-      email: enteredEmail,
-      password: enteredPassword,
-      returnSecureToken: true,
-    };
-
     if (!(enteredConfirmPassword === enteredPassword)) {
       setError("Password and confirm password not same");
       return;
     }
 
     try {
-      console.log("Hello");
       await register(enteredEmail, enteredPassword);
     } catch (error) {
       console.log(error);

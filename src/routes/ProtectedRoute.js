@@ -9,7 +9,6 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       if (!user.emailVerified) {
         navigate("/verifyemail");
       } else {
