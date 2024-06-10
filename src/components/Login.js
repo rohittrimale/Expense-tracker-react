@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import Loader from "./Loader";
 
 const Login = () => {
-  const { login } = useContext(UserContext);
+  const { login, loading } = useContext(UserContext);
 
   const navigate = useNavigate();
   const emailRef = useRef();
@@ -112,6 +113,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {loading && <Loader />}
     </section>
   );
 };

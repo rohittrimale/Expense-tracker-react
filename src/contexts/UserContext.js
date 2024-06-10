@@ -87,9 +87,23 @@ export const UserProvider = ({ children }) => {
       throw new Error(error.response.data.error.message || "Login error");
     }
   };
-
+  const sendEmailVerification = async (idToken) => {
+    try {
+      await axios.post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
+        {
+          requestType: "VERIFY_EMAIL",
+          idToken,
+        }
+      );
+    } catch (error) {
+      console.error("Error sending email verification:", error);
+    }
+  };
   return (
-    <UserContext.Provider value={{ user, login, logout, register, loading }}>
+    <UserContext.Provider
+      value={{ user, login, logout, register, loading, sendEmailVerification }}
+    >
       {children}
     </UserContext.Provider>
   );

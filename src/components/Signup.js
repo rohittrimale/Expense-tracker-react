@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./../contexts/UserContext";
+import Loader from "./Loader";
 
 const Signup = () => {
-  const { register, setIdToken } = useContext(UserContext);
+  const { register, setIdToken, loading } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const emailRef = useRef();
@@ -133,6 +134,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      {loading && <Loader />}
     </section>
   );
 };
