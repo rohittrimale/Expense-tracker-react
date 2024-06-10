@@ -9,11 +9,11 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
+  const [isVerifyUser, setIsVerifyUser] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [token, setToken] = useState("");
-  console.log(token);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -37,6 +37,7 @@ export const UserProvider = ({ children }) => {
       );
       const userData = response.data.users[0];
       setUser(userData);
+      setIsVerifyUser(userData.emailVerified);
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -105,7 +106,15 @@ export const UserProvider = ({ children }) => {
   };
   return (
     <UserContext.Provider
-      value={{ user, login, logout, register, loading, sendEmailVerification }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        loading,
+        sendEmailVerification,
+        isVerifyUser,
+      }}
     >
       {children}
     </UserContext.Provider>

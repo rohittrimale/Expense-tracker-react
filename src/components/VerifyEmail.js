@@ -1,10 +1,11 @@
-// components/VerifyEmail.js
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
-  const { user, sendEmailVerification } = useContext(UserContext);
+  const { user, sendEmailVerification, isVerifyUser } = useContext(UserContext);
   const [verificationMessage, setVerificationMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSendVerification = async () => {
     try {
@@ -13,9 +14,16 @@ const VerifyEmail = () => {
         "Verification email sent. Please check your inbox."
       );
     } catch (error) {
+      console.log(error);
       setVerificationMessage("Error sending verification email.");
     }
   };
+
+  useEffect(() => {
+    if (isVerifyUser) {
+      navigate("/");
+    }
+  }, [isVerifyUser, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
