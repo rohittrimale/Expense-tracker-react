@@ -36,54 +36,47 @@ const ExpenseList = () => {
 
   return (
     <div className="mt-6 mx-auto text-white">
-      <div className="grid grid-cols-6 justify-between bg-gray-800 px-3 items-center font-bold py-2">
-        <div>Expense Name</div>
+      {totalExpense ? (
+        <div>
+          <div className="grid grid-cols-6 justify-between bg-gray-800 px-3 items-center font-bold py-2">
+            <div>Expense Name</div>
 
-        <div>Expense Description</div>
+            <div>Expense Description</div>
 
-        <div>Expense Category</div>
-        <div className="flex items-center  ">
-          <div className="text-lg -ml-0.5">Expense Price</div>
+            <div>Expense Category</div>
+            <div className="flex items-center  ">
+              <div className="text-lg -ml-0.5">Expense Price</div>
+            </div>
+            <div>Edit</div>
+            <div>Delete</div>
+          </div>
+
+          <div>
+            {expenses.map((expense) => {
+              return (
+                <ExpenseCart
+                  userEmail={email}
+                  key={expense.id}
+                  expense={expense}
+                  id={expense.id}
+                />
+              );
+            })}
+          </div>
+
+          <div className="flex justify-end items-center text-2xl bg-gray-800 px-3 font-bold py-3">
+            <div className="text-xl">Total Expense : </div>
+            <div className="mr-24 flex items-center">
+              <MdCurrencyRupee />
+              {totalExpense}
+            </div>
+          </div>
         </div>
-        <div>Edit</div>
-        <div>Delete</div>
-      </div>
-
-      <div>
-        {expenses.map((expense) => {
-          return (
-            <ExpenseCart
-              userEmail={email}
-              key={expense.id}
-              expense={expense}
-              id={expense.id}
-            />
-          );
-        })}
-      </div>
-
-      <div className="flex justify-end items-center text-2xl bg-gray-800 px-3 font-bold py-3">
-        <div className="text-xl">Total Expense : </div>
-        <div className="mr-24 flex items-center">
-          <MdCurrencyRupee />
-          {totalExpense}
+      ) : (
+        <div className="text-xl font-bold bg-green-700 py-2 p-3 text-center">
+          You didnt added any Expenses till now{" "}
         </div>
-      </div>
-
-      {/* {Object.keys(expenses).map((userId) => {
-        console.log(userId);
-        return Object.keys(expenses[userId]).map((expenseId) => {
-          console.log(expenseId);
-          return (
-            <ExpenseCart
-              userEmail={email.substring(0, email.indexOf("@"))}
-              key={expenseId}
-              expense={expenses[userId][expenseId]}
-              id={expenseId}
-            />
-          );
-        });
-      })} */}
+      )}
     </div>
   );
 };
