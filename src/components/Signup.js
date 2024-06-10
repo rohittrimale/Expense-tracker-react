@@ -4,14 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./../contexts/UserContext";
 
 const Signup = () => {
-  const { signup, setIdToken } = useContext(UserContext);
+  const { register, setIdToken } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +30,11 @@ const Signup = () => {
     }
 
     try {
-      await signup(enteredEmail, enteredPassword);
+      console.log("Hello");
+      await register(enteredEmail, enteredPassword);
     } catch (error) {
-      setError("email alrady Exit");
+      console.log(error);
+      setError("email alrady Exit", error);
     }
   };
 
