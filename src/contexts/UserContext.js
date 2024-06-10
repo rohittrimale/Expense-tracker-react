@@ -12,6 +12,8 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  console.log(token);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -19,6 +21,7 @@ export const UserProvider = ({ children }) => {
 
     if (storedUser && idToken) {
       setUser(storedUser);
+      setToken(idToken);
       fetchUserData(idToken);
     } else {
       setLoading(false);
@@ -93,11 +96,11 @@ export const UserProvider = ({ children }) => {
         "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC0fisuDptkQLsA5PXa2PX3_0y5cwm4hK0",
         {
           requestType: "VERIFY_EMAIL",
-          idToken,
+          idToken: token,
         }
       );
     } catch (error) {
-      console.error("Error sending email verification:", error);
+      throw new Error(error.response.data.error.message || "Verify error");
     }
   };
   return (
